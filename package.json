@@ -2,12 +2,16 @@
   "dependencies": {
     "cors": "^2.8.5",
     "express": "4.17.1",
-    "nodemon": "^2.0.12"
+    "nodemon": "^2.0.12",
+    "uuid": "^8.3.2"
   },
   "name": "server_api",
   "version": "1.0.0",
   "main": "index.js",
   "repository": "git@github.com:B7atis/Server_API.git",
   "author": "Bartosz Jędrzejewski-Emche <jedrek2603@gmail.com>",
-  "license": "MIT"
+  "license": "MIT",
+  "scripts": {
+    "start": "nodemon server.js"
+  }
 }
