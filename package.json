@@ -12,6 +12,7 @@
   "author": "Bartosz Jędrzejewski-Emche <jedrek2603@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "start": "nodemon server.js"
+    "start": "nodemon server.js",
+    "build": "cd client && npm install && npm run build"
   }
 }
