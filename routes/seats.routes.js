@@ -3,7 +3,7 @@ const router = express.Router();
 const db = require('../db');
 const { v4: uuidv4 } = require('uuid');
 
-const getSeatById = seatId => db.seats.find(element => element.id === parseInt(seatId))
+const getSeatsById = seatId => db.seats.find(element => element.id === parseInt(seatId))
 
 // get all
 router.route('/seats').get((req, res) => {
@@ -12,7 +12,7 @@ router.route('/seats').get((req, res) => {
 
 // get by id
 router.route('/seats/:id').get((req, res) => {
-  res.json(getSeatById(req.params.id));
+  res.json(getSeatsById(req.params.id));
 });
 
 // post new
@@ -33,7 +33,7 @@ router.route('/seats/:id').put((req, res) => {
 
   /* Option 1 */
   const updatedElement = ({ id: req.params.id, day: day, seat: seat, client: client, email: email });
-  db.seats[db.seats.indexOf(getSeatById(req.params.id))] = updatedElement;
+  db.seats[db.seats.indexOf(getSeatsById(req.params.id))] = updatedElement;
 
   /* Option 2 */
   // const updatedElement = ({ id: req.params.id, day: day, seat: seat, client: client, email: email });
@@ -41,7 +41,7 @@ router.route('/seats/:id').put((req, res) => {
   // db.seats[index] = updatedElement;
 
   /* Option 3 */
-  // const seat = getSeatById(req.params.id);
+  // const seat = getSeatsById(req.params.id);
   // for (const [key, value] of Object.entries(req.body)) {
   //   seat[key] = value;
   // }
@@ -51,7 +51,7 @@ router.route('/seats/:id').put((req, res) => {
 
 // delete by id
 router.route('/seats/:id').delete((req, res) => {
-  db.seats.splice(db.seats.indexOf(getSeatById(req.params.id)), 1);
+  db.seats.splice(db.seats.indexOf(getSeatsById(req.params.id)), 1);
   res.json({ message: 'OK, deleted' });
 });
 
