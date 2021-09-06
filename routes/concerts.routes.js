@@ -1,55 +1,67 @@
 const express = require('express');
 const router = express.Router();
-const db = require('../db');
-const { v4: uuidv4 } = require('uuid');
-const { concerts } = require('../db');
+const Concert = require('../models/concert.model');
 
-const getConcertsById = seatId => db.seats.find(element => element.id === parseInt(seatId))
-
-// get all
-router.route('/concerts').get((req, res) => {
-  res.json(db.concerts);
+router.get('/concerts', async (req, res) => {
+  try {
+    res.json(await Concert.find());
+  }
+  catch (err) {
+    res.status(500).json({ message: err });
+  }
 });
 
-// get by id
-router.route('/concerts/:id').get((req, res) => {
-  res.json(getConcertsById(req.params.id));
+router.get('/concerts/:id', async (req, res) => {
+  try {
+    const conc = await Concert.findById(req.params.id);
+    if (!conc) res.status(404).json({ message: 'Not found' });
+    else res.json(conc);
+  }
+  catch (err) {
+    res.status(500).json({ message: err });
+  }
 });
 
-// post new
-router.route('/concerts').post((req, res) => {
-  const { performer, genre, price, day, image } = req.body;
-  const newElement = { id: uuidv4(), performer: performer, genre: genre, price: price, day: day, image: image };
-  db.concerts.push(newElement);
-  res.json({ message: 'OK, posted' });
+router.post('/concerts', async (req, res) => {
+  try {
+    const { performer, genre, price, day, image } = req.body;
+    const newElement = new Concert({ performer: performer, genre: genre, price: price, day: day, image: image });
+    await newElement.save();
+    res.json({ message: 'OK' });
+  }
+  catch (err) {
+    res.status(500).json({ message: err });
+  }
 });
 
-// get modify by id
-router.route('/concerts/:id').put((req, res) => {
-  const { performer, genre, price, day, image } = req.body;
-
-  /* Option 1 */
-  const updatedElement = ({ id: req.params.id, performer: performer, genre: genre, price: price, day: day, image: image });
-  db.concerts[db.concerts.indexOf(getConcertsById(req.params.id))] = updatedElement;
-
-  /* Option 2 */
-  // const updatedElement = ({ id: req.params.id, day: day, seat: seat, client: client, email: email });
-  // const index = db.concerts.findIndex(item => item.id === parseInt(req.params.id));
-  // db.concerts[index] = updatedElement;
-
-  /* Option 3 */
-  // const concerts = getSeatById(req.params.id);
-  // for(const [key, value] of Object.entries(req.body)) {
-  //   concerts[key] = value;
-  // }
-
-  res.json({ message: 'OK, updated' });
+router.put('/concerts/:id', async (req, res) => {
+  try {
+    const { performer, genre, price, day, image } = req.body;
+    const conc = await Concert.findById(req.params.id);
+    if (conc) {
+      await Concert.updateOne({ _id: req.params.id }, { $set: { performer: performer, genre: genre, price: price, day: day, image: image } });
+      res.json({ message: 'OK' });
+    }
+    else res.status(404).json({ message: 'Not found...' });
+  }
+  catch (err) {
+    res.status(500).json({ message: err });
+  }
 });
 
-// delete by id
-router.route('/concerts/:id').delete((req, res) => {
-  db.concerts.splice(db.concerts.indexOf(getConcertsById(req.params.id)), 1);
-  res.json({ message: 'OK, deleted' });
+router.delete('/concerts/:id', async (req, res) => {
+  try {
+    const conc = await Concert.findById(req.params.id);
+    if (conc) {
+      await Concert.deleteOne({ _id: req.params.id });
+      res.json({ message: 'OK' });
+    }
+    else res.status(404).json({ message: 'Not found...' });
+  }
+  catch (err) {
+    res.status(500).json({ message: err });
+  }
 });
+
 
 module.exports = router;
