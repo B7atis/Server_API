@@ -23,7 +23,7 @@ exports.getById = async (req, res) => {
 exports.post = async (req, res) => {
   try {
     const { day, seat, client, email } = req.body;
-    const newElement = new Seat({ day: day, seat: seat, client: client, email: email });
+    const newElement = new Seat({ day, seat, client, email });
     await newElement.save();
     res.json({ message: 'OK' });
   }
@@ -37,7 +37,7 @@ exports.update = async (req, res) => {
     const { day, seat, client, email } = req.body;
     const newSeat = await Seat.findById(req.params.id);
     if (newSeat) {
-      await Seat.updateOne({ _id: req.params.id }, { $set: { day: day, seat: seat, client: client, email: email } });
+      await Seat.updateOne({ _id: req.params.id }, { $set: { day, seat, client, email } });
       res.json({ message: 'OK' });
     }
     else res.status(404).json({ message: 'Not found...' });

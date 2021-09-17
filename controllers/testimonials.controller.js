@@ -36,7 +36,7 @@ exports.getById = async (req, res) => {
 exports.post = async (req, res) => {
   try {
     const { author, text } = req.body;
-    const newElement = new Testimonial({ author: author, text: text });
+    const newElement = new Testimonial({ author, text });
     await newElement.save();
     res.json({ message: 'OK' });
   }
@@ -50,7 +50,7 @@ exports.update = async (req, res) => {
     const { author, text } = req.body;
     const testim = await Testimonial.findById(req.params.id);
     if (testim) {
-      await Testimonial.updateOne({ _id: req.params.id }, { $set: { author: author, text: text } });
+      await Testimonial.updateOne({ _id: req.params.id }, { $set: { author, text } });
       res.json({ message: 'OK' });
     }
     else res.status(404).json({ message: 'Not found...' });
