@@ -37,7 +37,15 @@ app.use((req, res) => {
   res.status(404).send({ message: 'Not found....' });
 })
 
-mongoose.connect('mongodb+srv://${process.env.DB_LOGIN}:${process.env.DB_PASSWORD}@cluster0.le7he.mongodb.net/NewWaveDB?retryWrites=true&w=majority', { useNewUrlParser: true });
+// connects our backend code with the database
+const NODE_ENV = process.env.NODE_ENV;
+let dbURI = '';
+
+if (NODE_ENV === 'production') dbURI = 'mongodb+srv://${process.env.DB_LOGIN}:${process.env.DB_PASSWORD}@cluster0.le7he.mongodb.net/NewWaveDB?retryWrites=true&w=majority';
+else if (NODE_ENV === 'test') dbURI = 'mongodb://localhost:27017/companyDBtest';
+else dbURI = 'mongodb://localhost:27017/companyDB';
+
+mongoose.connect(dbURI, { useNewUrlParser: true, useUnifiedTopology: true });
 const db = mongoose.connection;
 
 db.once('open', () => {
@@ -55,3 +63,5 @@ const io = socket(server);
 io.on('connection', (socket) => {
   console.log('New socket!');
 });
+
+module.exports = server;
