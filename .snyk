@@ -1,0 +1,18 @@
+# Snyk (https://snyk.io) policy file, patches or ignores known vulnerabilities.
+version: v1.13.5
+# ignores vulnerabilities until expiry date; change duration by modifying expiry date
+ignore:
+  SNYK-JS-ANSIREGEX-1583908:
+    - mocha > wide-align > string-width > strip-ansi > ansi-regex:
+        reason: ''
+        expires: '2021-10-21T16:37:25.833Z'
+    - snyk > update-notifier > boxen > ansi-align > string-width > strip-ansi > ansi-regex:
+        reason: None given
+        expires: '2021-10-21T16:32:33.444Z'
+      nodemon > update-notifier > boxen > ansi-align > string-width > strip-ansi > ansi-regex:
+        reason: None given
+        expires: '2021-10-21T16:37:25.836Z'
+    - nodemon > update-notifier > boxen > ansi-align > string-width > strip-ansi > ansi-regex:
+        reason: None given
+        expires: '2021-10-21T16:32:33.444Z'
+patch: {}
