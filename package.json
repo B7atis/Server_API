@@ -12,7 +12,7 @@
     "nodemon": "^2.0.12",
     "onchange": "6.1.0",
     "snyk": "^1.717.0",
-    "socket.io": "^4.0.1",
+    "socket.io": "^4.2.0",
     "uuid": "^8.3.2"
   },
   "name": "server_api",
